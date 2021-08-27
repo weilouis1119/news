@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Show Image</title>
+</head>
+
+<body>
+    <h1>自由電子報即時新聞</h1>
+    <img style="width:720px" src="data:;base64,{{ img_stream }}">
+    <button onclick="window.location.href='http://35.76.188.119:8080/'">按我回首頁</button>
+    
+    <thead>
+        <h2>新聞標題及網址</h2>
+    </thead>
+    <tbody>
+	<ul>
+        {% for i in news %}
+           <li>
+		 <a style="color: blue" href={{i.url}} target="_blank" title="">{{i.title}}</a><br>
+           </li> 
+        {% endfor %}
+	</ul>
+
+    </tbody>
+    
+
+
+
+</body>
+</html>
