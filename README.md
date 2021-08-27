@@ -24,7 +24,7 @@ template : 放html的資料夾
 
 stopWosrd.txt : 停用詞，放斷詞後無意義的詞彙，如：你、我、儘管、也許等
 
-requiriments.txt : 使用套件及版本
+requirements.txt : 使用套件及版本
 
 free.csv、chinatimes.csv、udn.csv : 前100則新聞標題及網址
 
