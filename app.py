@@ -25,29 +25,45 @@ def index():
     if request.method=='POST':
         if request.values['send']=='送出':
             return render_template('index.html',name=request.values['user'])
-    return render_template('index.html',name="")
+    img_path = 'templates/img/free.png'
+    free_stream = return_img_stream(img_path)
+    img_path = 'templates/img/chinatimes.png'
+    china_stream = return_img_stream(img_path)
+    img_path = 'templates/img/udn.jpeg'
+    udn_stream = return_img_stream(img_path)
+    img_path = 'templates/img/WordArt.png'
+    logo_stream = return_img_stream(img_path) 
+    return render_template('index.html',free_stream=free_stream,
+                            china_stream=china_stream, udn_stream=udn_stream,
+                            logo_stream=logo_stream, name="")
 
 
 @app.route('/libertytimes')
 def free():
     img_path = 'free.png'
     img_stream = return_img_stream(img_path)
-    df = pd.read_csv('free.csv')[:20].to_dict('records')
-    return render_template('index-1.html', img_stream=img_stream, news=df)
+    bar_path = 'free_bar.png'
+    bar_stream = return_img_stream(bar_path)
+    df = pd.read_csv('free.csv')[:50].to_dict('records')
+    return render_template('index-1.html', img_stream=img_stream, bar_stream=bar_stream, news=df)
 
 @app.route('/chinatimes')
 def chinatimes():
     img_path = 'chinatimes.png'
     img_stream = return_img_stream(img_path)
-    df = pd.read_csv('chinatimes.csv')[:20].to_dict('records')
-    return render_template('index-2.html', img_stream=img_stream, news=df)
+    bar_path = 'chinatimes_bar.png'
+    bar_stream = return_img_stream(bar_path)
+    df = pd.read_csv('chinatimes.csv')[:50].to_dict('records')
+    return render_template('index-2.html', img_stream=img_stream, bar_stream=bar_stream, news=df)
 
 @app.route('/udn')
 def udn():
     img_path = 'udn.png'
     img_stream = return_img_stream(img_path)
-    df = pd.read_csv('udn.csv')[:20].to_dict('records')
-    return render_template('index-3.html', img_stream=img_stream,news=df)
+    bar_path = 'udn_bar.png'
+    bar_stream = return_img_stream(bar_path)
+    df = pd.read_csv('udn.csv')[:50].to_dict('records')
+    return render_template('index-3.html', img_stream=img_stream, bar_stream=bar_stream,news=df)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

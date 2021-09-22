@@ -7,60 +7,62 @@
 <style>
 ul {
 	list-style-type: none;
-
-	padding: 40px;
-	overflow: hidden;
-	background-color: thistle;
-	display: center;
-	width:100%;
 }
 
+div{
+float: left;
 
-ul li{float: left;
-display: center;
-margin-left: 12%;
-margin-right: 12%;
+border-radius: 10px;
+background-color: #BBD1EA;
+margin-left: 5%;
+margin-right: 5%;
+padding: 30px;
+padding-left: 40px;
+padding-right: 40px;
+white-space:nowrap;
 }
-ul li a{
-	display: block;
+div a{
 	color: black;
 	text-align: center;
 	text-decoration: none;
 }
 
-ul li a.active{
+div a.active{
 	color: lavender;
 	background-color: darkmagenta;
 }
 
-ul li a:hover:not(.active)
+div:hover:not(.active)
 {
-	background-color: darkviolet;
+	background-color: rgb(219, 220, 223, 0);
 	color: white;
 }
 
-
+img{
+	padding-right: 10px;
+}
 </style>
-<body>
+<body bgcolor="#F1F7EE">
+
+<div style="background-color: #F1F7EE">
+	<img src="data:;base64,{{ logo_stream }}" width="1000" height="500"\>
+</div>
+
+
 <div>
-	<ul>
-		<li><a href="http://35.76.188.119:8080/libertytimes">自由電子報</a></li>
-		<li><a href="http://35.76.188.119:8080/chinatimes">中時電子報</a></li>
-		<li><a href="http://35.76.188.119:8080/udn">聯合新聞網</a></li>
-
-	</ul>
+	<img src="data:;base64,{{ free_stream }}" width="25" height="25" style="float: left">
+	<a href="http://35.76.188.119:8080/libertytimes">自由電子報</a>
 </div>
-<div >
-	<h1>功能說明</h1>
-	<p>每天定時爬取以上三家新聞網的即時新聞，並製作成文字雲</p>
-	<p>文字雲為搜集前一百則即時新聞製成</p>
-	<p>每天中午12點、晚上6點更新</p>
-
-	<h1>未來目標</h1>
-	<p>優化斷詞精準度，自動新增詞彙</p>
-	<p>擴大到一週即時新聞文字雲</p>
-
+<div>
+	<img src="data:;base64,{{ china_stream }}" width="25" height="25" style="float: left">
+	<a href="http://35.76.188.119:8080/chinatimes">中時電子報</a>
 </div>
+<div>
+	<img src="data:;base64,{{ udn_stream }}" width="25" height="25" style="float: left">
+	<a href="http://35.76.188.119:8080/udn">聯合新聞網</a>
+</div>
+<div><a href="http://35.76.188.119:8080/about">關於我</a></div>
+
 
 
 
