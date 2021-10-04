@@ -64,6 +64,9 @@ def udn():
     bar_stream = return_img_stream(bar_path)
     df = pd.read_csv('udn.csv')[:50].to_dict('records')
     return render_template('index-3.html', img_stream=img_stream, bar_stream=bar_stream,news=df)
+@app.route('/about')
+def about():
+    return render_template('index-4.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

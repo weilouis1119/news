@@ -1,0 +1,35 @@
+<head>
+    <meta charset="utf-8">
+    <title>about me</title>
+    </head>
+<style>
+    li{
+        padding:20px;
+        font-size: x-large;
+    }
+</style>
+<body bgcolor="#F1F5F8">
+    <h1>網站說明</h1>
+    <ul>
+        <li>爬三家新聞網，看不同媒體對不同議題的關注度差異</li>
+        <li>每天0, 12, 18, 22點更新</li>
+        <li>爬取三家新聞的即時新聞，製成文字雲</li>
+        <li>程式碼：<a href="https://github.com/weilouis1119/news">https://github.com/weilouis1119/news</a></li>
+    </ul>
+
+    <h1>使用技術</h1>
+        <ul>
+            <li>使用語言及環境：Python、Linux Ubuntu20.04 (AWS上租用虛擬機)</li>
+            <li>資料搜集：ajax網頁、靜態網頁爬蟲</li>
+            <li>資料處理：jieba 斷詞、wordcloud 製作文字雲</li>
+            <li>資料呈現：租用AWS虛擬機，在上面跑Flask</li>
+            <li>資料庫： MySql</li>
+            <li>定時下載：Linux corntab 排程</li>
+        </ul>
+    <h1>未來展望</h1>
+    <ul>
+        <li>自動新增詞彙，解決斷詞不精準問題</li>
+        <li>製作一週文字雲</li>
+    </ul>
+    <button onclick="window.location.href='http://35.76.188.119:8080/'" style="float:right;margin:120px;margin-top:0px;">按我回首頁</button>
+</body>

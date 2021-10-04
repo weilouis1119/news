@@ -2,6 +2,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import jieba
+import jieba.analyse
 import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine
@@ -61,18 +62,13 @@ plt.title('新聞類別分析', fontsize=25)
 plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
 plt.savefig('free_bar.png', transparent=True)
 
-# 讀入停用詞檔
-stopWords = []
-with open('stopWords.txt', 'r', encoding='UTF-8') as file:
-    for data in file.readlines():
-        data = data.strip()
-        stopWords.append(data)
-
-word = []
-for i in range(len(news)):
-    for j in jieba.cut(news[i], cut_all=False, HMM=True):
-        if j not in stopWords:
-            word.append(j)
+free_word = []
+for i in news:
+    jieba.load_userdict('new_word.txt')
+    jieba.analyse.set_stop_words('stopWords.txt')
+    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
+    for j in key_words:
+        free_word.append(j)
 print('free done')
 # 中時
 
@@ -110,12 +106,14 @@ plt.figure(figsize=(6,6))
 plt.title('新聞類別分析', fontsize=25)
 plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
 plt.savefig('chinatimes_bar.png', transparent=True)
-
+print('chinatimes chart ok')
 chinatimes_word = []
-for i in range(len(chinatimes_news)):
-    for j in jieba.cut(chinatimes_news[i], cut_all=False, HMM=True):
-        if j not in stopWords:
-            chinatimes_word.append(j)
+for i in chinatimes_news:
+    #jieba.load_userdict('new_word.txt')
+    jieba.analyse.set_stop_words('stopWords.txt')
+    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
+    for j in key_words:
+        chinatimes_word.append(j)
 print('chinatimes done')
 
 # 聯合
@@ -157,12 +155,14 @@ plt.figure(figsize=(6,6))
 plt.title('新聞類別分析', fontsize=25)
 plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
 plt.savefig('udn_bar.png', transparent=True)
-
+print('udn chart ok')
 udn_word = []
-for i in range(len(udn_news)):
-    for j in jieba.cut(udn_news[i], cut_all=False, HMM=True):
-        if j not in stopWords:
-            udn_word.append(j)
+for i in udn_news:
+    #jieba.load_userdict('new_word.txt')
+    jieba.analyse.set_stop_words('stopWords.txt')
+    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
+    for j in key_words:
+        udn_word.append(j)
 
 print('udn done')
 
@@ -193,23 +193,23 @@ def Wordcloud(filename, textList, name):
    plt.axis("off")
    plt.savefig(filename, transparent=True)
 
-Wordcloud('free', word, '自由電子報')
+Wordcloud('free', free_word, '自由電子報')
 Wordcloud('chinatimes', chinatimes_word, '中時電子報')
 Wordcloud('udn', udn_word, '聯合新聞網')
 print('word cloud done')
 engine = create_engine("mysql+pymysql://louis:q7a4z1cc@127.0.0.1:3306/news")
 nowTime = datetime.now().strftime('%Y%m%d%H')
-word_df = pd.DataFrame(word)
+word_df = pd.DataFrame(news)
 word_df.to_sql('free%s' % nowTime, engine, index=False)
 print('word to sql done')
 
 nowTime = datetime.now().strftime('%Y%m%d%H')
-chinatimes_df = pd.DataFrame(chinatimes_word)
+chinatimes_df = pd.DataFrame(chinatimes_news)
 chinatimes_df.to_sql('chinatimes%s' % nowTime,engine,index=False) 
 print('chinatimes word to sql')
 
 nowTime = datetime.now().strftime('%Y%m%d%H')
-udn_df = pd.DataFrame(udn_word)
+udn_df = pd.DataFrame(udn_news)
 udn_df.to_sql('udn%s' % nowTime,engine,index=False) 
 
 print('Done')
