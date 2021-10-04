@@ -32,5 +32,5 @@ free.csv、chinatimes.csv、udn.csv : 前100則新聞標題及網址
 
 free.png、chinatimes.png、udn.png : 即時文字雲圖檔
 
-free_chart.png、chinatimes_chart.png、udn_chart.png 新聞分類圖檔
+free_bar.png、chinatimes_bar.png、udn_bar.png 新聞分類圖檔
 
