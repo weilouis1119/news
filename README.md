@@ -30,5 +30,7 @@ requirements.txt : 使用套件及版本
 
 free.csv、chinatimes.csv、udn.csv : 前100則新聞標題及網址
 
-free.png、chinatimes.png、udn.png : 前100則新聞標題及網址
+free.png、chinatimes.png、udn.png : 即時文字雲圖檔
+
+free_chart.png、chinatimes_chart.png、udn_chart.png 新聞分類圖檔
 
