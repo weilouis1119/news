@@ -6,6 +6,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import jieba
 import jieba.analyse
+
 def wordJieba(news):
     word = []
     for i in news:
@@ -62,17 +63,9 @@ for i in df['Tables_in_news']:
 conn.close()
 
 
-# 讀入停用詞檔
-stopWords = []
-with open('stopWords.txt', 'r', encoding='UTF-8') as file:
-    for data in file.readlines():
-        data = data.strip()
-        stopWords.append(data)
-
-
-Wordcloud('udn_weekly.png', wordJieba(udn_list))
-Wordcloud('free_weekly.png', wordJieba(free_list))
-Wordcloud('chinatimes_weekly.png', wordJieba(chinatimes_list))
+Wordcloud('img/udn_weekly.png', wordJieba(udn_list))
+Wordcloud('img/free_weekly.png', wordJieba(free_list))
+Wordcloud('img/chinatimes_weekly.png', wordJieba(chinatimes_list))
 
 
 

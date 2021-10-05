@@ -12,13 +12,49 @@ from matplotlib.font_manager import FontProperties
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 from PIL import Image
-# 自由
+
+def chart(types, name):
+    dic = {}
+    dic = {i :types.count(i) for i in types}
+    mpl.rcParams[u'font.sans-serif'] = ['SimHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+    plt.figure(figsize=(6,6))
+    plt.title('新聞類別分析', fontsize=25)
+    plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
+    plt.savefig('img/%s_bar.png' % name, transparent=True)
+
+def text_jieba(news):
+    word = []
+    for i in news:
+        jieba.analyse.set_stop_words('stopWords.txt')
+        key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
+        for j in key_words:
+            word.append(j)
+    return word
+
+def Wordcloud(filename, textList, name):
+   afterFilter_SpaceSplit = " ".join(textList)    
+   wc = WordCloud(mode='RGBA',
+                  background_color="rgba(255, 255, 255, 0)",  
+                  max_words=500,                 
+                  max_font_size=60,           
+                  font_path='78992571833.ttc',
+                  random_state=42,             
+                  prefer_horizontal=5)
+   wc.generate(afterFilter_SpaceSplit)
+   plt.figure(figsize=(10,8))
+   plt.title('%s新聞文字雲' % name, fontsize=40, pad=30)
+   plt.imshow(wc)
+   plt.axis("off")
+   plt.savefig(filename, transparent=True)
+
+# 自由電子報新聞爬蟲
 urls = []
 titles = []
 types = []
 headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'}
 
-#第一頁
+# 第一頁
 res = requests.get('https://news.ltn.com.tw/ajax/breakingnews/all/1', headers=headers)
 for i in range(20):
     dic = json.loads(res.text)['data'][i]
@@ -28,7 +64,7 @@ for i in range(20):
     titles.append(title)
     urls.append(url)
     types.append(typ)
-#第2-6頁
+# 第2-6頁
 for page in range(2,6):
     res = requests.get('https://news.ltn.com.tw/ajax/breakingnews/all/%s' % str(page), headers=headers)
     dic = json.loads(res.text)['data']
@@ -49,29 +85,10 @@ for url in urls:
     for i in bs.find('div', class_='text').find_all('p'):
         if '<p class="' not in str(i) and '武漢肺炎專區' not in i.text:
             text += i.text
-    
     news.append(text)
-
-# 類別分類
-dic = {}
-dic = {i :types.count(i) for i in types}
-mpl.rcParams[u'font.sans-serif'] = ['SimHei']
-mpl.rcParams['axes.unicode_minus'] = False
-plt.figure(figsize=(6,6))
-plt.title('新聞類別分析', fontsize=25)
-plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
-plt.savefig('free_bar.png', transparent=True)
-
-free_word = []
-for i in news:
-    jieba.load_userdict('new_word.txt')
-    jieba.analyse.set_stop_words('stopWords.txt')
-    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
-    for j in key_words:
-        free_word.append(j)
 print('free done')
-# 中時
 
+# 中時電子報新聞爬蟲
 chinatimes_titles = []
 chinatimes_urls = []
 chinatimes_types = [] 
@@ -98,26 +115,9 @@ for url in chinatimes_urls[:]:
     for t in tag:
         text += t.text.replace('\n', '')
     chinatimes_news.append(text)
-        
-# 類別分類
-dic={}
-dic = {i :chinatimes_types.count(i) for i in chinatimes_types}
-plt.figure(figsize=(6,6))
-plt.title('新聞類別分析', fontsize=25)
-plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
-plt.savefig('chinatimes_bar.png', transparent=True)
-print('chinatimes chart ok')
-chinatimes_word = []
-for i in chinatimes_news:
-    #jieba.load_userdict('new_word.txt')
-    jieba.analyse.set_stop_words('stopWords.txt')
-    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
-    for j in key_words:
-        chinatimes_word.append(j)
 print('chinatimes done')
 
-# 聯合
-
+# 聯合新聞網新聞爬蟲
 udn_titles = []
 udn_urls = []
 for i in range(1, 6):
@@ -147,68 +147,42 @@ for url in udn_urls[:]:
         udn_types.append(typ)       
     except:
         None
-
-# 類別分類
-dic={}
-dic = {i :udn_types.count(i) for i in udn_types}
-plt.figure(figsize=(6,6))
-plt.title('新聞類別分析', fontsize=25)
-plt.pie(list(dic.values()),labels=list(dic.keys()),labeldistance = 1.1, startangle = 90, counterclock = False, textprops = {"fontsize" : 12})
-plt.savefig('udn_bar.png', transparent=True)
-print('udn chart ok')
-udn_word = []
-for i in udn_news:
-    #jieba.load_userdict('new_word.txt')
-    jieba.analyse.set_stop_words('stopWords.txt')
-    key_words=jieba.analyse.extract_tags(i, topK=10, withWeight=False, allowPOS=())
-    for j in key_words:
-        udn_word.append(j)
-
 print('udn done')
 
+# 存新聞網址及標題
 titleFree_df = pd.DataFrame({'title':titles,'url':urls})
-titleFree_df.to_csv('free.csv', index=False)
+titleFree_df.to_csv('title_and_url/free.csv', index=False)
 
 titleChinatimes_df = pd.DataFrame({'title':chinatimes_titles,'url':chinatimes_urls})
-titleChinatimes_df.to_csv('chinatimes.csv', index=False)
+titleChinatimes_df.to_csv('title_and_url/chinatimes.csv', index=False)
 
 titleUdn_df = pd.DataFrame({'title':udn_titles,'url':udn_urls})
-titleUdn_df.to_csv('udn.csv', index=False)
+titleUdn_df.to_csv('title_and_url/udn.csv', index=False)
 print('title and url done')
 
-# wordcloud
-def Wordcloud(filename, textList, name):
-   afterFilter_SpaceSplit = " ".join(textList)    
-   wc = WordCloud(mode='RGBA',
-                  background_color="rgba(255, 255, 255, 0)",  
-                  max_words=500,                 
-                  max_font_size=60,           
-                  font_path='78992571833.ttc',
-                  random_state=42,             
-                  prefer_horizontal=5)
-   wc.generate(afterFilter_SpaceSplit)
-   plt.figure(figsize=(10,8))
-   plt.title('%s新聞文字雲' % name, fontsize=40, pad=30)
-   plt.imshow(wc)
-   plt.axis("off")
-   plt.savefig(filename, transparent=True)
+# 類別分析圖表製作
+chart(types, 'free')
+chart(chinatimes_types, 'chinatimes')
+chart(udn_types, 'udn')
+print('chart done')
 
-Wordcloud('free', free_word, '自由電子報')
-Wordcloud('chinatimes', chinatimes_word, '中時電子報')
-Wordcloud('udn', udn_word, '聯合新聞網')
+# 斷詞與文字雲製作
+Wordcloud('img/free', text_jieba(news), '自由電子報')
+Wordcloud('img/chinatimes', text_jieba(chinatimes_news), '中時電子報')
+Wordcloud('img/udn', text_jieba(udn_news), '聯合新聞網')
 print('word cloud done')
+
+# 連接資料庫
 engine = create_engine("mysql+pymysql://louis:q7a4z1cc@127.0.0.1:3306/news")
 nowTime = datetime.now().strftime('%Y%m%d%H')
 word_df = pd.DataFrame(news)
 word_df.to_sql('free%s' % nowTime, engine, index=False)
 print('word to sql done')
 
-nowTime = datetime.now().strftime('%Y%m%d%H')
 chinatimes_df = pd.DataFrame(chinatimes_news)
 chinatimes_df.to_sql('chinatimes%s' % nowTime,engine,index=False) 
 print('chinatimes word to sql')
 
-nowTime = datetime.now().strftime('%Y%m%d%H')
 udn_df = pd.DataFrame(udn_news)
 udn_df.to_sql('udn%s' % nowTime,engine,index=False) 
 

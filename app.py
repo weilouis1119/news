@@ -40,29 +40,29 @@ def index():
 
 @app.route('/libertytimes')
 def free():
-    img_path = 'free.png'
+    img_path = 'img/free.png'
     img_stream = return_img_stream(img_path)
-    bar_path = 'free_bar.png'
+    bar_path = 'img/free_bar.png'
     bar_stream = return_img_stream(bar_path)
-    df = pd.read_csv('free.csv')[:50].to_dict('records')
+    df = pd.read_csv('title_and_url/free.csv')[:50].to_dict('records')
     return render_template('index-1.html', img_stream=img_stream, bar_stream=bar_stream, news=df)
 
 @app.route('/chinatimes')
 def chinatimes():
-    img_path = 'chinatimes.png'
+    img_path = 'img/chinatimes.png'
     img_stream = return_img_stream(img_path)
-    bar_path = 'chinatimes_bar.png'
+    bar_path = 'img/chinatimes_bar.png'
     bar_stream = return_img_stream(bar_path)
-    df = pd.read_csv('chinatimes.csv')[:50].to_dict('records')
+    df = pd.read_csv('title_and_url/chinatimes.csv')[:50].to_dict('records')
     return render_template('index-2.html', img_stream=img_stream, bar_stream=bar_stream, news=df)
 
 @app.route('/udn')
 def udn():
-    img_path = 'udn.png'
+    img_path = 'img/udn.png'
     img_stream = return_img_stream(img_path)
-    bar_path = 'udn_bar.png'
+    bar_path = 'img/udn_bar.png'
     bar_stream = return_img_stream(bar_path)
-    df = pd.read_csv('udn.csv')[:50].to_dict('records')
+    df = pd.read_csv('title_and_url/udn.csv')[:50].to_dict('records')
     return render_template('index-3.html', img_stream=img_stream, bar_stream=bar_stream,news=df)
 @app.route('/about')
 def about():
