@@ -6,7 +6,7 @@ from datetime import timedelta
 
 weekago = int((date.today() - timedelta(7)).strftime('%Y%m%d%H'))
 
-conn = pymysql.connect(host="localhost",user='louis', password='q7a4z1cc',db='news', charset='utf8')
+conn = pymysql.connect(host="localhost",user='name', password='password',db='news', charset='utf8')
 cursor = conn.cursor()
 sql = 'show tables;'
 df = pd.read_sql(sql, conn)

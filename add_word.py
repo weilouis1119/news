@@ -111,7 +111,7 @@ class NewWord(object):
 
 if __name__ == '__main__':
 
-    conn = pymysql.connect(host="localhost",user='louis', password='q7a4z1cc',db='news', charset='utf8')
+    conn = pymysql.connect(host="localhost",user='name', password='password',db='news', charset='utf8')
     sql = 'show tables;'
     df = pd.read_sql(sql, conn)
     news = []

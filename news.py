@@ -173,7 +173,7 @@ Wordcloud('img/udn', text_jieba(udn_news), '聯合新聞網')
 print('word cloud done')
 
 # 連接資料庫
-engine = create_engine("mysql+pymysql://louis:q7a4z1cc@127.0.0.1:3306/news")
+engine = create_engine("mysql+pymysql://name:password@127.0.0.1:3306/news")
 nowTime = datetime.now().strftime('%Y%m%d%H')
 word_df = pd.DataFrame(news)
 word_df.to_sql('free%s' % nowTime, engine, index=False)
